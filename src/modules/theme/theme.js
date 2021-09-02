@@ -15,6 +15,9 @@ const theme = createTheme({
         background: {
             default: "#fff",
         },
+        textLink: {
+            default: "0733ce",
+        },
     },
 });
 

@@ -1,8 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-
-import BasicCard from "../components/Card/Card";
 
 export default function Home() {
     return (
@@ -17,7 +14,7 @@ export default function Home() {
             </Head>
 
             <main className={styles.main}>
-                <BasicCard text="Test Material-UI Component" />
+                <h1>Todo App</h1>
             </main>
         </div>
     );
