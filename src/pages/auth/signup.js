@@ -7,6 +7,7 @@ import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, TextField, Typography, Button } from "@material-ui/core";
 import TransitionAlert from "../../components/TransitionAlert/TransitionAlert";
+import { emailValidation } from "../../utils/regex";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -71,10 +72,7 @@ export default function Login() {
         if (isInitialMount.current) {
             isInitialMount.current = false;
         } else {
-            const re =
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-            const isValid = re.test(String(email).toLowerCase());
+            const isValid = emailValidation.test(String(email).toLowerCase());
             setIsEmailValid(isValid);
         }
     }, [email]);

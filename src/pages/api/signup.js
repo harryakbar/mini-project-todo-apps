@@ -1,13 +1,14 @@
+import { emailValidation } from "../../utils/regex";
+
 export default function handler(req, res) {
     switch (req.method) {
         case "POST":
             const { email, password, confirmPassword } = req.body;
 
             // validate email
-            const re =
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-            const validEmail = re.test(String(email).toLowerCase());
+            const validEmail = emailValidation.test(
+                String(email).toLowerCase()
+            );
             if (!validEmail) {
                 res.status(400).json({
                     code: 400,
