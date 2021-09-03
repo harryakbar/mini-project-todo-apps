@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
     const classes = useStyles();
-    const isInitialMount = useRef(true);
 
     const [email, setEmail] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(true);
@@ -68,24 +67,20 @@ export default function Login() {
 
     // email validation
     useEffect(() => {
-        // only validate when email change and not on initial mount
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-        } else {
+        if (email) {
             const isValid = emailValidation.test(String(email).toLowerCase());
             setIsEmailValid(isValid);
+        } else {
+            setIsEmailValid(false);
         }
     }, [email]);
 
     // validate password
     useEffect(() => {
-        // only validate when password change and not on initial mount
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
+        if (password === confirmPassword) {
+            setIsPasswordMatch(true);
         } else {
-            password === confirmPassword
-                ? setIsPasswordMatch(true)
-                : setIsPasswordMatch(false);
+            setIsPasswordMatch(false);
         }
     }, [password, confirmPassword]);
 
@@ -130,7 +125,7 @@ export default function Login() {
                                 size="small"
                                 variant="outlined"
                             />
-                            {!isEmailValid && (
+                            {email && !isEmailValid && (
                                 <label className={classes.errorMessage}>
                                     Please insert a valid email address
                                 </label>
@@ -161,11 +156,13 @@ export default function Login() {
                                 size="small"
                                 variant="outlined"
                             />
-                            {!isPasswordMatch && (
-                                <label className={classes.errorMessage}>
-                                    {"Password didn't match"}
-                                </label>
-                            )}
+                            {password &&
+                                confirmPassword &&
+                                !isPasswordMatch && (
+                                    <label className={classes.errorMessage}>
+                                        {"Password didn't match"}
+                                    </label>
+                                )}
 
                             <Button
                                 type="submit"
