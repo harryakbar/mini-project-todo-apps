@@ -3,6 +3,7 @@ import axios from "axios";
 import Router from "next/router";
 
 import Head from "next/head";
+import Link from "next/link";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
     AppBar,
@@ -42,6 +43,11 @@ const useStyles = makeStyles((theme) => ({
     toolbar: {
         display: "flex",
         justifyContent: "space-between",
+    },
+    wrapper: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
     },
     container: {
         marginTop: theme.spacing(10),
@@ -91,7 +97,19 @@ export default function Admin() {
                         <Typography component="h1" variant="h5">
                             Admin Page
                         </Typography>
-                        <Button color="inherit">Log out</Button>
+                        <div className={classes.wrapper}>
+                            <Typography variant="body1" style={{ paddingRight: "16px" }}>
+                                ujang@gmail.com
+                            </Typography>
+                            <Link href="/admin/login">
+                                <Button
+                                    style={{ backgroundColor: "#f44336" }}
+                                    color="inherit"
+                                >
+                                    Log out
+                                </Button>
+                            </Link>
+                        </div>
                     </Toolbar>
                 </AppBar>
                 <Container component="main" className={classes.container}>
