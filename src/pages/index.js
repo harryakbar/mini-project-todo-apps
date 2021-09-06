@@ -1,8 +1,9 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useCookies } from "react-cookie";
+import Cookies from "universal-cookie";
 
+import axios from "../lib/axios";
 import Navbar from "../components/Navbar/Navbar";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,11 +20,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
     const classes = useStyles();
-    const [cookies] = useCookies();
+    const cookies = new Cookies();
     const [email, setEmail] = useState("");
+    const [todos, setTodos] = useState([]);
+
+    const getTodos = () => {
+        axios
+            .get("/todos")
+            .then((res) => setTodos(res.data))
+            .catch((err) => console.log(err));
+    };
 
     useEffect(() => {
-        setEmail(cookies.TodoApp_userMail);
+        setEmail(cookies.get("TodoApp_userMail"));
+        getTodos();
     }, []);
 
     return (

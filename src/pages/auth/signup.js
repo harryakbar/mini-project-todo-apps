@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Router from "next/router";
 import { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
+import Cookies from "universal-cookie";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
     const classes = useStyles();
-    const [_, setCookies] = useCookies();
+    const cookies = new Cookies();
 
     const [email, setEmail] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(true);
@@ -62,10 +62,10 @@ export default function Login() {
             .post("http://localhost:3000/api/signup", payload)
             .then((res) => {
                 if (res.status >= 200 && res.status < 300) {
-                    setCookies("TodoApp_userMail", email, {
+                    cookies.set("TodoApp_userMail", email, {
                         path: "/",
                     });
-                    setCookies(
+                    cookies.set(
                         "TodoApp_userToken",
                         "dummyuserauthtokencookie",
                         {
