@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import Router from "next/router";
-
 import Head from "next/head";
 import Link from "next/link";
+import Router from "next/router";
+import { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
+import axios from "axios";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, TextField, Typography, Button } from "@material-ui/core";
 import TransitionAlert from "../../components/TransitionAlert/TransitionAlert";
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
     const classes = useStyles();
+    const [_, setCookies] = useCookies();
 
     const [email, setEmail] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(true);
@@ -58,7 +60,21 @@ export default function Login() {
 
         axios
             .post("http://localhost:3000/api/signup", payload)
-            .then((res) => Router.push("/"))
+            .then((res) => {
+                if (res.status >= 200 && res.status < 300) {
+                    setCookies("TodoApp_userMail", email, {
+                        path: "/",
+                    });
+                    setCookies(
+                        "TodoApp_userToken",
+                        "dummyuserauthtokencookie",
+                        {
+                            path: "/",
+                        }
+                    );
+                    Router.push("/");
+                }
+            })
             .catch((err) => {
                 setIsOpenAlert(true);
                 console.error(err);
