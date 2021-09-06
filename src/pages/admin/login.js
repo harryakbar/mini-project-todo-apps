@@ -3,9 +3,8 @@ import axios from "axios";
 import Router from "next/router";
 
 import Head from "next/head";
-import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, TextField, Typography, Button, Grid } from "@material-ui/core";
+import { Container, TextField, Typography, Button } from "@material-ui/core";
 import TransitionAlert from "../../components/TransitionAlert/TransitionAlert";
 import { emailValidation } from "../../utils/regex";
 import { baseUrl } from "../../utils/baseUrl";
@@ -55,8 +54,8 @@ export default function Login() {
         };
 
         axios
-            .post(`${baseUrl}/login`, payload)
-            .then((res) => Router.push("/todo-list"))
+            .post(`${baseUrl}/adminLogin`, payload)
+            .then((res) => Router.push("/admin"))
             .catch((err) => {
                 setIsOpenAlert(true);
                 console.error(err);
@@ -79,7 +78,7 @@ export default function Login() {
                 <title>Login</title>
                 <meta
                     name="description"
-                    content="Login for Todo App dashboard"
+                    content="Admin Login for Todo App dashboard"
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
@@ -87,7 +86,7 @@ export default function Login() {
                 <Container component="main" maxWidth="sm">
                     <div className={classes.paper}>
                         <Typography component="h1" variant="h5">
-                            Log in
+                            Admin Login
                         </Typography>
                         <form
                             className={classes.form}
@@ -144,22 +143,6 @@ export default function Login() {
                             >
                                 Log In
                             </Button>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Link href="/auth/forgotpassword">
-                                        <a className={classes.link}>
-                                            Forgot password?
-                                        </a>
-                                    </Link>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Link href="/auth/signup">
-                                        <a className={classes.link}>
-                                            {"Don't have an account? Sign Up"}
-                                        </a>
-                                    </Link>
-                                </Grid>
-                            </Grid>
                         </form>
                     </div>
                 </Container>
