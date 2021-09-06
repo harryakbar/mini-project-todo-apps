@@ -1,20 +1,17 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "universal-cookie";
 
 import axios from "../lib/axios";
 import Navbar from "../components/Navbar/Navbar";
+import TodoForm from "../components/TodoForm/TodoForm";
+import { Container } from "@material-ui/core";
+import TodoLists from "../components/TodoLists/TodoLists";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
+    container: {
+        marginTop: theme.spacing(4),
     },
 }));
 
@@ -30,6 +27,21 @@ export default function Dashboard() {
             .then((res) => setTodos(res.data))
             .catch((err) => console.log(err));
     };
+
+    const addTodo = useCallback((todo, event) => {
+        event.preventDefault();
+        console.log(todo);
+    }, []);
+
+    const updateTodo = useCallback((todo, event) => {
+        event.preventDefault();
+        console.log(todo);
+    }, []);
+
+    const removeTodo = useCallback((todo, event) => {
+        event.preventDefault();
+        console.log(todo);
+    }, []);
 
     useEffect(() => {
         setEmail(cookies.get("TodoApp_userMail"));
@@ -49,7 +61,14 @@ export default function Dashboard() {
 
             <main>
                 <Navbar email={email} />
-                <h1>Todo</h1>
+                <Container className={classes.container}>
+                    <TodoForm onSubmit={addTodo} />
+                    <TodoLists
+                        todos={todos}
+                        onUpdateTodo={updateTodo}
+                        onRemoveTodo={removeTodo}
+                    />
+                </Container>
             </main>
         </div>
     );
