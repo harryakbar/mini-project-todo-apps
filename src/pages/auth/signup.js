@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Container, TextField, Typography, Button } from "@material-ui/core";
 import TransitionAlert from "../../components/TransitionAlert/TransitionAlert";
 import { emailValidation } from "../../utils/regex";
+import { baseUrl } from "../../utils/baseUrl";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -59,7 +60,7 @@ export default function Login() {
         };
 
         axios
-            .post("http://localhost:3000/api/signup", payload)
+            .post(`${baseUrl}/signup`, payload)
             .then((res) => {
                 if (res.status >= 200 && res.status < 300) {
                     cookies.set("TodoApp_userMail", email, {

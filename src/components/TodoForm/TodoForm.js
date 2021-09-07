@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
         flex: 1,
         backgroundColor: theme.palette.info.main,
         marginRight: theme.spacing(2),
-
         color: "#fff",
+
         [theme.breakpoints.down("sm")]: {
             fontSize: 10,
         },
