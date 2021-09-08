@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Router from "next/router";
+import Cookies from "universal-cookie";
 
 import Head from "next/head";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, TextField, Typography, Button, Grid } from "@material-ui/core";
+import {
+    Container,
+    TextField,
+    Typography,
+    Button,
+    Grid,
+} from "@material-ui/core";
 import TransitionAlert from "../../components/TransitionAlert/TransitionAlert";
 import { emailValidation } from "../../utils/regex";
 import { baseUrl } from "../../utils/baseUrl";
@@ -40,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
     const classes = useStyles();
+    const cookies = new Cookies();
 
     const [email, setEmail] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(true);
@@ -51,12 +59,26 @@ export default function Login() {
         event.preventDefault();
         const payload = {
             email,
-            password
+            password,
         };
 
         axios
             .post(`${baseUrl}/login`, payload)
-            .then((res) => Router.push("/todo-list"))
+            .then((res) => {
+                if (res.status >= 200 && res.status < 300) {
+                    cookies.set("TodoApp_userMail", email, {
+                        path: "/",
+                    });
+                    cookies.set(
+                        "TodoApp_userToken",
+                        "dummyuserauthtokencookie",
+                        {
+                            path: "/",
+                        }
+                    );
+                    Router.push("/");
+                }
+            })
             .catch((err) => {
                 setIsOpenAlert(true);
                 console.error(err);
@@ -146,7 +168,7 @@ export default function Login() {
                             </Button>
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Link href="/auth/forgotpassword">
+                                    <Link href="/auth/forgot">
                                         <a className={classes.link}>
                                             Forgot password?
                                         </a>

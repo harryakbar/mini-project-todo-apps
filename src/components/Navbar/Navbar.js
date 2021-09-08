@@ -1,5 +1,7 @@
-import React from "react";
+import Router from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
+import Cookies from "universal-cookie";
+
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -39,6 +41,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar({ title, email }) {
     const classes = useStyles();
+    const cookies = new Cookies();
+
+    const signOut = () => {
+        cookies.remove("TodoApp_userMail");
+        cookies.remove("TodoApp_userToken");
+        Router.push("/auth/login");
+    };
 
     return (
         <div className={classes.root}>
@@ -52,6 +61,7 @@ export default function Navbar({ title, email }) {
                             {email}
                         </Typography>
                         <Button
+                            onClick={signOut}
                             className={classes.logoutBtn}
                             variant="contained"
                         >

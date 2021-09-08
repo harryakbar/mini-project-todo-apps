@@ -1,15 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import Cookies from "universal-cookie";
-import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, TextField, Typography, Button } from "@material-ui/core";
 import TransitionAlert from "../../components/TransitionAlert/TransitionAlert";
-import { emailValidation } from "../../utils/regex";
-import { baseUrl } from "../../utils/baseUrl";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -33,18 +29,21 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: "none",
         color: theme.palette.info.main,
     },
+    email: {
+        fontWeight: 800,
+    },
     errorMessage: {
         color: theme.palette.error.main,
         margin: 0,
     },
 }));
 
-export default function Login() {
+export default function Recover() {
     const classes = useStyles();
-    const cookies = new Cookies();
+    const router = useRouter();
+    const { email } = router.query;
 
-    const [email, setEmail] = useState("");
-    const [isEmailValid, setIsEmailValid] = useState(true);
+    const [code, setCode] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isPasswordMatch, setIsPasswordMatch] = useState(true);
@@ -53,48 +52,17 @@ export default function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const payload = {
-            email,
-            password,
-            confirmPassword,
-        };
-
-        axios
-            .post(`${baseUrl}/signup`, payload)
-            .then((res) => {
-                if (res.status >= 200 && res.status < 300) {
-                    cookies.set("TodoApp_userMail", email, {
-                        path: "/",
-                    });
-                    cookies.set(
-                        "TodoApp_userToken",
-                        "dummyuserauthtokencookie",
-                        {
-                            path: "/",
-                        }
-                    );
-                    Router.push("/");
-                }
-            })
-            .catch((err) => {
-                setIsOpenAlert(true);
-                console.error(err);
-            });
-    };
-
-    // email validation
-    useEffect(() => {
-        if (email) {
-            const isValid = emailValidation.test(String(email).toLowerCase());
-            setIsEmailValid(isValid);
+        if (code && isPasswordMatch && password && confirmPassword) {
+            // without update user password implementation
+            router.push("/auth/login");
         } else {
-            setIsEmailValid(false);
+            setIsOpenAlert(true);
         }
-    }, [email]);
+    };
 
     // validate password
     useEffect(() => {
-        if (password === confirmPassword) {
+        if (password === confirmPassword && password && confirmPassword) {
             setIsPasswordMatch(true);
         } else {
             setIsPasswordMatch(false);
@@ -104,8 +72,7 @@ export default function Login() {
     return (
         <>
             <Head>
-                <title>Sign Up</title>
-                <meta name="signup" content="Sign up for Todo App dashboard" />
+                <title>Recover</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
@@ -113,7 +80,7 @@ export default function Login() {
                 <Container component="main" maxWidth="sm">
                     <div className={classes.paper}>
                         <Typography component="h1" variant="h5">
-                            Sign Up
+                            Recover
                         </Typography>
 
                         <form
@@ -121,30 +88,34 @@ export default function Login() {
                             autoComplete="off"
                             onSubmit={handleSubmit}
                         >
-                            {/* error api feedback */}
+                            {/* error form feedback */}
                             <TransitionAlert
                                 open={isOpenAlert}
                                 setOpen={setIsOpenAlert}
                                 severity="error"
-                                message="Fail to sign up! Please check your email and password"
+                                message="Fail to update password! Please check your confirmation code and password"
                             />
+                            <label component="body">
+                                We already sent confirmation code to{" "}
+                                <span className={classes.email}>{email}</span>
+                            </label>
 
-                            {/* email field */}
+                            {/* confirmation code field */}
                             <TextField
-                                value={email}
+                                value={code}
                                 onChange={(event) =>
-                                    setEmail(event.target.value)
+                                    setCode(event.target.value)
                                 }
-                                name="email"
-                                type="email"
+                                name="code"
+                                type="text"
                                 autoFocus
-                                label="Email"
+                                label="Confirmation Code"
                                 size="small"
                                 variant="outlined"
                             />
-                            {email && !isEmailValid && (
+                            {!code && (
                                 <label className={classes.errorMessage}>
-                                    Please insert a valid email address
+                                    Insert confirmation code
                                 </label>
                             )}
 
@@ -156,7 +127,7 @@ export default function Login() {
                                 }
                                 name="password"
                                 type="password"
-                                label="Password"
+                                label="New Password"
                                 size="small"
                                 variant="outlined"
                             />
@@ -187,12 +158,12 @@ export default function Login() {
                                 variant="contained"
                                 color="primary"
                             >
-                                Sign Up
+                                Submit
                             </Button>
 
                             <Link href="/auth/login">
                                 <a className={classes.link}>
-                                    Already have an account? Log In
+                                    Back to login page
                                 </a>
                             </Link>
                         </form>
