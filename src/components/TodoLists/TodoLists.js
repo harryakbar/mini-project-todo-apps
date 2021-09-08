@@ -45,7 +45,7 @@ export default function TodoLists({ todos, onUpdateTodo, onRemoveTodo }) {
                     <div className={classes.todoItem} key={todo.id}>
                         <Checkbox
                             className={classes.checkbox}
-                            onClick={(event) => onRemoveTodo("todo", event)}
+                            onClick={(event) => onRemoveTodo(todo.id, event)}
                             color="primary"
                         />
                         <TextField
