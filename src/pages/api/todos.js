@@ -30,7 +30,7 @@ export default function handler(req, res) {
             todos = todos.filter((todo) => todo.id !== req.body.id);
             res.status(200).json({
                 code: 200,
-                message: `todo with id of ${req.body.id} has been deleted!`,
+                message: `todo item has been deleted!`,
                 error: null,
                 data: null,
             });

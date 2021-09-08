@@ -21,6 +21,7 @@ export default function Dashboard() {
     const cookies = new Cookies();
     const [email, setEmail] = useState("");
     const [todos, setTodos] = useState([]);
+    console.log(todos);
 
     // snackbar state
     const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +60,9 @@ export default function Dashboard() {
             .then((res) => {
                 if (res.status >= 200 && res.status < 300) {
                     // remove todo from state
-                    setTodos(todos.filter((todo) => todo.id !== todoId));
+                    setTodos((currentState) =>
+                        currentState.filter((todo) => todo.id !== todoId)
+                    );
 
                     // show feedback
                     setSeverity("success");

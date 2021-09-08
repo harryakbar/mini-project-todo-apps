@@ -14,8 +14,10 @@ const useStyles = makeStyles((theme) => ({
         flex: 5,
     },
     checkbox: {
-        transform: "scale(3)",
         marginRight: theme.spacing(2),
+        "& > *": {
+            transform: "scale(3)",
+        },
     },
     image: {
         flex: 1,
