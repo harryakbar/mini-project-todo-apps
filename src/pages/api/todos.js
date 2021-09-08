@@ -25,6 +25,17 @@ export default function handler(req, res) {
                 error: null,
                 data: todos,
             });
+            break;
+
+        case "POST":
+            todos = todos.concat(req.body.data);
+            res.status(200).json({
+                code: 200,
+                message: `todo item has been added!`,
+                error: null,
+                data: null,
+            });
+            break;
 
         case "DELETE":
             todos = todos.filter((todo) => todo.id !== req.body.id);
@@ -34,6 +45,7 @@ export default function handler(req, res) {
                 error: null,
                 data: null,
             });
+            break;
 
         default:
             res.status(405).json({
