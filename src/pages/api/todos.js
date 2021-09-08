@@ -1,4 +1,4 @@
-const todos = [
+let todos = [
     {
         id: 1,
         todo: "Read a book",
@@ -19,7 +19,21 @@ const todos = [
 export default function handler(req, res) {
     switch (req.method) {
         case "GET":
-            res.status(200).json(todos);
+            res.status(200).json({
+                code: 200,
+                message: "todos fetched",
+                error: null,
+                data: todos,
+            });
+
+        case "DELETE":
+            todos = todos.filter((todo) => todo.id !== req.body.id);
+            res.status(200).json({
+                code: 200,
+                message: `todo item has been deleted!`,
+                error: null,
+                data: null,
+            });
 
         default:
             res.status(405).json({

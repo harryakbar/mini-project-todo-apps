@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar/Navbar";
 import TodoForm from "../components/TodoForm/TodoForm";
 import { Container } from "@material-ui/core";
 import TodoLists from "../components/TodoLists/TodoLists";
+import AppSnackbar from "../components/Snackbar/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -20,11 +21,25 @@ export default function Dashboard() {
     const cookies = new Cookies();
     const [email, setEmail] = useState("");
     const [todos, setTodos] = useState([]);
+    console.log(todos);
 
+    // snackbar state
+    const [isOpen, setIsOpen] = useState(false);
+    const [severity, setSeverity] = useState("");
+    const [message, setMessage] = useState("");
+
+    const handleClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsOpen(false);
+    };
+
+    // todo CRUD functions
     const getTodos = () => {
         axios
             .get("/todos")
-            .then((res) => setTodos(res.data))
+            .then((res) => setTodos(res.data.data))
             .catch((err) => console.log(err));
     };
 
@@ -38,9 +53,32 @@ export default function Dashboard() {
         console.log(todo);
     }, []);
 
-    const removeTodo = useCallback((todo, event) => {
+    const removeTodo = useCallback((todoId, event) => {
         event.preventDefault();
-        console.log(todo);
+        axios
+            .delete("/todos", { id: todoId })
+            .then((res) => {
+                if (res.status >= 200 && res.status < 300) {
+                    // remove todo from state
+                    setTodos((currentState) =>
+                        currentState.filter((todo) => todo.id !== todoId)
+                    );
+
+                    // show feedback
+                    setSeverity("success");
+                    setMessage(res.data.message);
+                    setIsOpen(true);
+                } else {
+                    setSeverity("error");
+                    setMessage(res.data.error);
+                    setIsOpen(true);
+                }
+            })
+            .catch(() => {
+                setSeverity("error");
+                setMessage("unkown error ocurred!");
+                setIsOpen(true);
+            });
     }, []);
 
     useEffect(() => {
@@ -67,6 +105,12 @@ export default function Dashboard() {
                         todos={todos}
                         onUpdateTodo={updateTodo}
                         onRemoveTodo={removeTodo}
+                    />
+                    <AppSnackbar
+                        isOpen={isOpen}
+                        handleClose={handleClose}
+                        severity={severity}
+                        message={message}
                     />
                 </Container>
             </main>

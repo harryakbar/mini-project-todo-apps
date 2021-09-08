@@ -14,8 +14,10 @@ const useStyles = makeStyles((theme) => ({
         flex: 5,
     },
     checkbox: {
-        transform: "scale(3)",
         marginRight: theme.spacing(2),
+        "& > *": {
+            transform: "scale(3)",
+        },
     },
     image: {
         flex: 1,
@@ -45,7 +47,7 @@ export default function TodoLists({ todos, onUpdateTodo, onRemoveTodo }) {
                     <div className={classes.todoItem} key={todo.id}>
                         <Checkbox
                             className={classes.checkbox}
-                            onClick={(event) => onRemoveTodo("todo", event)}
+                            onClick={(event) => onRemoveTodo(todo.id, event)}
                             color="primary"
                         />
                         <TextField
