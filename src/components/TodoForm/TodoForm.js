@@ -15,12 +15,35 @@ const useStyles = makeStyles((theme) => ({
     },
     uploadImgBtn: {
         flex: 1,
+        color: "#fff",
+        fontWeight: 600,
+        display: "grid",
+        placeItems: "center",
         backgroundColor: theme.palette.info.main,
         marginRight: theme.spacing(2),
+        borderRadius: theme.spacing(0.5),
+
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 10,
+        },
+
+        "&:hover": {
+            backgroundColor: "#1186d3",
+            cursor: "pointer",
+        },
+    },
+    removeImageBtn: {
+        flex: 1,
+        marginRight: theme.spacing(2),
+        backgroundColor: "#da645d",
         color: "#fff",
 
         [theme.breakpoints.down("sm")]: {
             fontSize: 10,
+        },
+
+        "&:hover": {
+            backgroundColor: "#ca544d",
         },
     },
     submitBtn: {
@@ -37,13 +60,24 @@ export default function TodoForm({ onSubmit }) {
     const [todo, setTodo] = useState({
         todo: "",
         image: "",
+        imageFile: null,
     });
+
+    const removeImage = (event) => {
+        event.preventDefault();
+        setTodo((currentTodo) => ({
+            ...currentTodo,
+            image: "",
+            imageFile: null,
+        }));
+    };
 
     return (
         <form
             className={classes.form}
             autoComplete="off"
             onSubmit={(event) => onSubmit(todo, event)}
+            encType="multipart/form-data"
         >
             <TextField
                 className={classes.inputField}
@@ -62,15 +96,31 @@ export default function TodoForm({ onSubmit }) {
                 variant="outlined"
             />
 
-            <Button
-                className={classes.uploadImgBtn}
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="inherit"
-            >
-                Add Image
-            </Button>
+            {todo.image ? (
+                <Button
+                    className={classes.removeImageBtn}
+                    onClick={removeImage}
+                    fullWidth
+                    variant="contained"
+                >
+                    Remove Image
+                </Button>
+            ) : (
+                <label className={classes.uploadImgBtn}>
+                    <input
+                        type="file"
+                        style={{ display: "none" }}
+                        onChange={(event) =>
+                            setTodo((todos) => ({
+                                ...todos,
+                                image: event.target.files[0].name,
+                                imageFile: event.target.files[0],
+                            }))
+                        }
+                    />
+                    ADD IMAGE
+                </label>
+            )}
             <Button
                 className={classes.submitBtn}
                 type="submit"

@@ -21,7 +21,6 @@ export default function Dashboard() {
     const cookies = new Cookies();
     const [email, setEmail] = useState("");
     const [todos, setTodos] = useState([]);
-    console.log(todos);
 
     // snackbar state
     const [isOpen, setIsOpen] = useState(false);
@@ -40,11 +39,16 @@ export default function Dashboard() {
         axios
             .get("/todos")
             .then((res) => setTodos(res.data.data))
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                setSeverity("error");
+                setMessage("unkown error occurred!");
+                setIsOpen(true);
+            });
     };
 
     const addTodo = (todo, event) => {
         event.preventDefault();
+
         axios
             .post("/todos", { data: { ...todo, id: todos.length + 1 } })
             .then((res) => {
