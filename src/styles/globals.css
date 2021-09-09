@@ -1,16 +1,56 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
+}
+:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
+    opacity: 1;
+}
+::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
+    opacity: 1;
+}
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
+}
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
+}
+
+::placeholder {
+    /* Most modern browsers support this now. */
+    font-weight: 500;
+    color: #000;
+    font-size: 14px;
 }

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "universal-cookie";
 
@@ -74,7 +74,29 @@ export default function Dashboard() {
 
     const updateTodo = (todo, event) => {
         event.preventDefault();
-        console.log(todo);
+
+        axios
+            .put("/todos", { data: todo })
+            .then((res) => {
+                console.log(res.data);
+                if (res.status >= 200 && res.status < 300) {
+                    getTodos();
+
+                    // show feedback
+                    setSeverity("success");
+                    setMessage(res.data.message);
+                    setIsOpen(true);
+                } else {
+                    setSeverity("error");
+                    setMessage(res.data.error);
+                    setIsOpen(true);
+                }
+            })
+            .catch(() => {
+                setSeverity("error");
+                setMessage("unkown error ocurred!");
+                setIsOpen(true);
+            });
     };
 
     const removeTodo = (todoId, event) => {
