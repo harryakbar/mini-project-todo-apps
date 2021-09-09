@@ -78,7 +78,6 @@ export default function Dashboard() {
         axios
             .put("/todos", { data: todo })
             .then((res) => {
-                console.log(res.data);
                 if (res.status >= 200 && res.status < 300) {
                     getTodos();
 
