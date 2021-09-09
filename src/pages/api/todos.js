@@ -35,7 +35,21 @@ export default function handler(req, res) {
                 error: null,
                 data: null,
             });
+            break;
 
+        case "PUT":
+            const idx = todos.findIndex((todo) => todo.id === req.body.data.id);
+
+            // check if image updated
+            if (req.body.data.image) todos[idx].image = req.body.data.image;
+            todos[idx].todo = req.body.data.todo;
+
+            res.status(201).json({
+                code: 201,
+                message: `todo item has been updated!`,
+                error: null,
+                data: null,
+            });
             break;
 
         case "DELETE":
