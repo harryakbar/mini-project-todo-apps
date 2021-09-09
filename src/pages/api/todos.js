@@ -35,6 +35,7 @@ export default function handler(req, res) {
                 error: null,
                 data: null,
             });
+
             break;
 
         case "DELETE":
