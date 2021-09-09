@@ -43,17 +43,37 @@ export default function Dashboard() {
             .catch((err) => console.log(err));
     };
 
-    const addTodo = useCallback((todo, event) => {
+    const addTodo = (todo, event) => {
+        event.preventDefault();
+        axios
+            .post("/todos", { data: { ...todo, id: todos.length + 1 } })
+            .then((res) => {
+                if (res.status >= 200 && res.status < 300) {
+                    getTodos();
+
+                    // show feedback
+                    setSeverity("success");
+                    setMessage(res.data.message);
+                    setIsOpen(true);
+                } else {
+                    setSeverity("error");
+                    setMessage(res.data.error);
+                    setIsOpen(true);
+                }
+            })
+            .catch(() => {
+                setSeverity("error");
+                setMessage("unkown error ocurred!");
+                setIsOpen(true);
+            });
+    };
+
+    const updateTodo = (todo, event) => {
         event.preventDefault();
         console.log(todo);
-    }, []);
+    };
 
-    const updateTodo = useCallback((todo, event) => {
-        event.preventDefault();
-        console.log(todo);
-    }, []);
-
-    const removeTodo = useCallback((todoId, event) => {
+    const removeTodo = (todoId, event) => {
         event.preventDefault();
         axios
             .delete("/todos", { id: todoId })
@@ -79,7 +99,7 @@ export default function Dashboard() {
                 setMessage("unkown error ocurred!");
                 setIsOpen(true);
             });
-    }, []);
+    };
 
     useEffect(() => {
         setEmail(cookies.get("TodoApp_userMail"));

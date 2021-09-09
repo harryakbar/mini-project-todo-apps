@@ -35,7 +35,6 @@ export default function TodoForm({ onSubmit }) {
     const classes = useStyles();
 
     const [todo, setTodo] = useState({
-        id: "dummyId",
         todo: "",
         image: "",
     });
