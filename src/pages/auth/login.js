@@ -13,7 +13,7 @@ import {
     Button,
     Grid,
 } from "@material-ui/core";
-import TransitionAlert from "../../components/TransitionAlert/TransitionAlert";
+import AppSnackbar from "../../components/Snackbar/Snackbar";
 import { emailValidation } from "../../utils/regex";
 import { baseUrl } from "../../utils/baseUrl";
 
@@ -117,9 +117,9 @@ export default function Login() {
                             onSubmit={handleSubmit}
                         >
                             {/* error api feedback */}
-                            <TransitionAlert
-                                open={isOpenAlert}
-                                setOpen={setIsOpenAlert}
+                            <AppSnackbar
+                                isOpen={isOpenAlert}
+                                handleClose={setIsOpenAlert}
                                 severity="error"
                                 message="Fail to login! Please check your email and password"
                             />

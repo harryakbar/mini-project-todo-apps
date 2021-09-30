@@ -88,6 +88,9 @@ export default function TodoForm({ onSubmit }) {
                         todo: event.target.value,
                     }))
                 }
+                inputProps={{
+                    "data-testid": "todo-input",
+                }}
                 name="todo"
                 type="text"
                 autoFocus
